@@ -1,0 +1,28 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "Face Recognition",
+  "main": "event.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node event.js"
+  },
+  "keywords": [
+    "Face",
+    "Recognition"
+  ],
+  "author": "gjx",
+  "license": "ISC",
+  "dependencies": {
+    "baidu-ai": "^0.1.0",
+    "body-parser": "^1.18.1",
+    "child_process": "^1.0.2",
+    "express": "^4.15.4",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.0",
+    "nodemon": "^1.12.1",
+    "path": "^0.12.7",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {}
+}

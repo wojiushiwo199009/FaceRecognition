@@ -1,0 +1,74 @@
+body{
+	margin: 0 auto;
+	background: #37474f;
+}
+section{
+	width: 50%;
+	float:left;
+	height: 100%;
+}
+.pic{
+	float: left;
+	width: 50%;
+}
+video {
+	border: 1px solid #9e9d9d;
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+canvas {
+	margin-top: 20px;
+	border: 1px solid #ccc;
+	display: block;
+}
+.btn-box{
+	text-align: center;
+}
+.recognition{
+	margin-left:50px;
+}
+.pic img{
+	display: block;
+	margin:0 auto;
+	margin-top: 2%;
+	margin-bottom: 30px;
+	width: 95%;
+
+}
+a:hover::after, a:focus::after {
+	height: 5px;
+	opacity: 1;
+	-webkit-transform: translateY(0px);
+	-moz-transform: translateY(0px);
+	transform: translateY(0px);
+}
+a::after {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: #fff;
+	content: '';
+	opacity: 0;
+	-webkit-transition: height 0.3s, opacity 0.3s, -webkit-transform 0.3s;
+	-moz-transition: height 0.3s, opacity 0.3s, -moz-transform 0.3s;
+	transition: height 0.3s, opacity 0.3s, transform 0.3s;
+	-webkit-transform: translateY(-10px);
+	-moz-transform: translateY(-10px);
+	transform: translateY(-10px);
+}
+a{
+	position: relative;
+	display: inline-block;
+	margin: 15px 25px;
+	outline: none;
+	color: #fff;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 400;
+	text-shadow: 0 0 1px rgba(255,255,255,0.3);
+	font-size: 1.35em;
+}

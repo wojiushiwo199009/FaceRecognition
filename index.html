@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>人脸识别</title>
+    <link rel="stylesheet" href="/css/buttons.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <section>
+        <video width="97%" height="80%" id="myVideo" class="capture"></video>
+        <div class="btn-box">
+            <button class="open button button--pipaluk button--inverted  button--round-s button--text-thick">打开摄像头</button>
+            <button class="recognition button button--pipaluk button--inverted  button--round-s button--text-thick">捕获图片</button>
+        </div>
+    </section>
+    <div class="pic">
+    </div>
+    <script type="text/javascript" src="/js/post.js"></script>
+    <script>
+        /**
+         *1.调用本地摄像头
+                window.navigator.getUserMedia
+                兼容性
+         *2.同步到video标签的src
+                对象 => window.URL => blob
+                解析视频流为blob添加到src
+         *3.canvas创建视频片段照片
+         */
+
+        var capture = document.querySelector(('.capture')); //获取video标签
+        var open = document.querySelector('.open'); //获取open按钮
+        var recognition = document.querySelector('.recognition'); //获取图片按钮
+        var picBox = document.querySelector('.pic'); //截取图片父元素
+        //兼容性处理
+        window.navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMeida || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+        open.onclick = invokingCamera;//回调函数 函数名称+() 主动执行  直接调用
+        recognition.onclick = screenShot;
+        //调用摄像头 获取流媒体数据
+        function invokingCamera(){
+            capture.style.border = "0";
+            if(navigator.getUserMedia){  //判断是否能够调用API对象
+                navigator.getUserMedia({
+                    'video':true, //是否调用摄像头
+                    'audio':false  //是否调用音频
+                },getVideoStream,failToGet)
+            }else{
+                alert('您的浏览器不支持调用摄像头')
+            }
+        }
+        //获取视频流数据 成功后做什么
+        function getVideoStream(stream){
+            buffer=stream;
+            //如果是火狐浏览器
+            if(capture.mozSrcObject != undefined){
+                capture.mozSrcObject = buffer;//路径生成
+            }else{
+                //通过URL方法转化stream流数据  为blob 赋值给video标签的src
+                capture.src = window.URL && window.URL.createObjectURL(buffer) || buffer;
+            }
+        }
+        //如果获取失败
+        function failToGet(err){
+            console.log('err')
+        }
+
+        function screenShot(){
+            var canvas = document.createElement('canvas');
+            canvas.width = 531,canvas.height=395;
+            //创建画布 绘制上下文
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(capture,0,0,531,395);
+            var basePath = canvas.toDataURL();//把当前canvas转化为base64文件
+            var oImg = document.createElement('img');
+            oImg.src = basePath;
+            picBox.appendChild(oImg);
+            localStorage.setItem("imgsrc",basePath);
+            new Post({
+                url:"http://localhost:3000/people",
+                data:{
+                    imgUrl:basePath
+                },
+                success:function(res){
+                    var Abox = document.createElement("a");
+                    var responseData;
+                    if (res.includes("score")) {
+                        responseData = JSON.parse(res);
+                        if(responseData.score && (responseData.score>85)){
+                            Abox.href = "/result";
+                            Abox.innerHTML = "您与本地文件的相似度为："+responseData.score+"，点击查看详情";
+                            picBox.appendChild(Abox);
+                        }else{
+                            Abox.href = "/people";
+                            Abox.innerHTML = "您与本地照片还是有些差别滴，请重新拍摄或更换本地照片";
+                            picBox.appendChild(Abox);
+                        }
+                    }else{
+                        responseData = res;
+                        Abox.href = "/people";
+                        Abox.innerHTML = responseData;
+                        picBox.appendChild(Abox);
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>人脸识别</title>
+	<link rel="stylesheet" href="/css/buttons.css">
+	<link rel="stylesheet" href="/css/result.css">
+</head>
+<body>
+	<form><button type="button" class="open button button--pipaluk button--inverted  button--round-s button--text-thick">点击查看</button></form>
+	<section>
+		<div class="result">
+			<div>分析结果如下：</div>
+			<div>与本地照片相似度为：<span class="similar"></span></div>
+			<div>识别到您的年龄为：<span class="age"></span></div>
+			<div>识别到您的魅力值为（0-100之间）：<span class="beauty"></span></div>
+			<div>识别到您的人脸置信度为（0-1之间）：<span class="faceProbability"></span></div>
+			<div>识别到您的表情为：<span class="expression"></span></div>
+			<div>识别到您的性别为：<span class="gender"></span></div>
+			<div>识别到您的是否戴眼镜：<span class="glasses"></span></div>
+		</div>
+	</section>
+	<div><a href="/">返回首页</a></div>
+	<script type="text/javascript" src="/js/post.js"></script>
+	<script type="text/javascript">
+		var resultDiv = document.querySelector('.result'); //分析结果
+		var similarDiv = document.querySelector('.similar'); //获取与本地照片相似度标签
+        var ageDiv = document.querySelector('.age'); //获取年龄标签
+        var beautyDiv = document.querySelector('.beauty'); //获取美丑标签
+        var faceProbabilityDiv = document.querySelector('.faceProbability'); //获取脸的可信度标签
+        var expressionDiv = document.querySelector('.expression'); //获取人脸的表情标签
+        var genderDiv = document.querySelector('.gender'); //获取性别标签
+        var glassesDiv = document.querySelector('.glasses'); //获取是否戴眼镜标签
+        var buttonDiv = document.querySelector('button'); //获取是否戴眼镜标签
+        var basePath = localStorage.getItem("imgsrc");
+        buttonDiv.onclick=function(){
+        	buttonDiv.style.display="none";
+        	new Post({
+        		url:"http://localhost:3000/result",
+        		data:{
+        			imgUrl:basePath
+        		},
+        		success:function(res){
+        			resultDiv.style.display="block";
+        			var responseData = JSON.parse(res);
+        			similarDiv.innerHTML = responseData.score;
+        			ageDiv.innerHTML = responseData.age;
+        			beautyDiv.innerHTML = responseData.beauty;
+        			faceProbabilityDiv.innerHTML = responseData.faceProbability;
+        			if(responseData.expression == 0){
+        				expressionDiv.innerHTML = "系统检测到您没有笑，笑一笑，十年少，以后要笑口常开哦~";
+        			}else if(responseData.expression == 1){
+        				expressionDiv.innerHTML = "系统检测到您是微笑，看来今天您心情还不错嘛！";
+        			}else if(responseData.expression == 2){
+        				expressionDiv.innerHTML = "系统检测到您是大笑，看来您今天很开心，记得将快乐传递给大家哦~";
+        			}
+        			if(responseData.gender == "male"){
+        				genderDiv.innerHTML = "男";
+        			}else if(responseData.gender == "female"){
+        				genderDiv.innerHTML = "女";
+        			}
+        			if(responseData.glasses == 0){
+        				glassesDiv.innerHTML = "您没有戴眼镜"
+        			}else if(responseData.glasses == 1){
+        				glassesDiv.innerHTML = "您戴的是普通眼镜"
+        			}else if(responseData.glasses == 2){
+        				glassesDiv.innerHTML = "您戴的是墨镜"
+        			}
+        		}
+        	})
+        }
+        
+        
+    </script>
+</body>
+</html>
