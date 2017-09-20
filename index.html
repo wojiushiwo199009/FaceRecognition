@@ -86,7 +86,7 @@
                     var responseData;
                     if (res.includes("score")) {
                         responseData = JSON.parse(res);
-                        if(responseData.score && (responseData.score>85)){
+                        if(responseData.score && (responseData.score>60)){
                             Abox.href = "/result";
                             Abox.innerHTML = "您与本地文件的相似度为："+responseData.score+"，点击查看详情";
                             picBox.appendChild(Abox);
