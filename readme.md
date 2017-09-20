@@ -5,7 +5,8 @@
 
 2、依赖包的安装：
 *打开aip-node-sdk-1.1.0文件夹运行 npm install
-*在event.js所在文件夹运行npm install
+*在event.js所在文件夹中运行 npm install aip-node-sdk-1.1.0,然后再运行npm install
+
 
 3、运行方式1：
 *在event.js所在文件夹运行npm run start
