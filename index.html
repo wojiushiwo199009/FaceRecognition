@@ -58,6 +58,7 @@
             }else{
                 //通过URL方法转化stream流数据  为blob 赋值给video标签的src
                 capture.src = window.URL && window.URL.createObjectURL(buffer) || buffer;
+                capture.play();
             }
         }
         //如果获取失败
