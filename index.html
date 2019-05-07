@@ -56,7 +56,7 @@
             if(capture.mozSrcObject != undefined){
                 capture.mozSrcObject = buffer;//路径生成
             }else{
-                //通过URL方法转化stream流数据  为blob 赋值给video标签的src
+                //通过URL方法转化stream流数据  为blob 赋值给video标签的src1
                 capture.src = window.URL && window.URL.createObjectURL(buffer) || buffer;
                 capture.play();
             }
